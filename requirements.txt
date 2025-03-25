@@ -1,0 +1,5 @@
+requests
+openai
+networkx
+matplotlib
+flask
