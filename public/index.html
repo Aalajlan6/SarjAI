@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gutenberg Graph</title>
+  <!-- Bootstrap CSS (Optional) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+</head>
+<body class="container my-5">
+  <h1 class="mb-4">Gutenberg Character Graph</h1>
+
+  <!-- Book ID Input -->
+  <div class="mb-3">
+    <label for="bookId" class="form-label">Enter a Project Gutenberg Book ID:</label>
+    <input type="text" class="form-control" id="bookId" placeholder="e.g. 12345" />
+  </div>
+
+  <!-- Button to Generate Graph -->
+  <button class="btn btn-primary" onclick="generateGraph()">
+    Generate Graph
+  </button>
+
+  <!-- Display the Graph -->
+  <div class="mt-4">
+    <img id="graphImg" src="" alt="Graph will appear here" style="max-width: 600px;" />
+  </div>
+
+  <!-- Optional Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function generateGraph() {
+      const bookId = document.getElementById("bookId").value || "12345";
+
+      // Call the Express route
+      fetch(`/generate-graph?book_id=${bookId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.text();
+        })
+        .then((data) => {
+          console.log("Server response:", data);
+          // Once complete, update the <img> source
+          // Add a cache-buster query param so the browser doesn't use an old image
+          const timestamp = new Date().getTime();
+          document.getElementById("graphImg").src = `/static/graph.png?${timestamp}`;
+        })
+        .catch((error) => {
+          console.error("Error generating graph:", error);
+        });
+    }
+  </script>
+</body>
+</html>
