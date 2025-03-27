@@ -116,7 +116,8 @@ def generate_graph(interactions):
             print(f"Skipping line due to error: {interaction} -> {e}")
 
     # Create positions for nodes using spring layout
-    pos = nx.spring_layout(g)
+    pos = nx.spring_layout(G, seed=42, k=0.5, iterations=200)
+
 
     # Create a new figure
     plt.figure()
