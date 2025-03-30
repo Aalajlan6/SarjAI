@@ -3,7 +3,6 @@ import os
 import openai
 import networkx as nx
 import matplotlib.pyplot as plt
-from flask import Flask, render_template
 import sys
 
 def get_content(book_id):
@@ -116,7 +115,7 @@ def generate_graph(interactions):
             print(f"Skipping line due to error: {interaction} -> {e}")
 
     # Create positions for nodes using spring layout
-    pos = nx.spring_layout(G, seed=42, k=0.5, iterations=200)
+    pos = nx.spring_layout(g, seed=42, k=0.5, iterations=200)
 
 
     # Create a new figure
@@ -148,17 +147,6 @@ def generate_graph(interactions):
     plt.close()
 
 
-
-# app = Flask(__name__)
-
-# @app.route("/")
-# def home():
-#     # Render the blank index.html from the templates folder
-#     return render_template("index.html")
-
-# if __name__ == "__main__":
-#     # Start the Flask development server
-#     app.run(debug=True)
 
 
 
