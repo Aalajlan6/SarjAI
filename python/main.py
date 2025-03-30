@@ -1,6 +1,6 @@
 import requests
 import os
-import openai
+from openai import OpenAI
 import networkx as nx
 import matplotlib.pyplot as plt
 import sys
@@ -58,7 +58,7 @@ def get_content(book_id):
 #     return interaction_list
 
 def generate_list_of_interactions(content):
-    client = openai.OpenAI(
+    client = OpenAI(
         api_key="37e22f43-0bd5-4862-974e-bbc1340fb984",
         base_url="https://api.sambanova.ai/v1",
     )
@@ -156,12 +156,23 @@ def generate_graph(interactions):
 
 
 def main(book_id):
+    print(f"Python main() called with book_id={book_id}")
+
     content, metadata = get_content(book_id)
+    if not content:
+        print("No content returned. Possibly invalid book_id or request failure.")
+        return
+
+    print("Content fetched successfully.")
     interactions = generate_list_of_interactions(content)
+
+    if not interactions:
+        print("No interactions extracted. Possibly AI returned nothing.")
+        return
+
+    print(f"Extracted {len(interactions)} interactions. Generating graph...")
     generate_graph(interactions)
-    #print(content)
-    #print(interactions)
-    # #example ["('Bob', 'Beulah')", "('Jim', 'Bob')", "('Bob', 'Beulah')"]
+    print("Graph generation complete.")
 
 if __name__ == "__main__":
     book_id = sys.argv[1] if len(sys.argv) > 1 else "12345"
