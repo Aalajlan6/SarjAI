@@ -1,6 +1,6 @@
 import requests
 import os
-from openai import OpenAI
+import openai
 import networkx as nx
 import matplotlib.pyplot as plt
 import sys
@@ -58,12 +58,10 @@ def get_content(book_id):
 #     return interaction_list
 
 def generate_list_of_interactions(content):
-    client = OpenAI(
-        api_key="37e22f43-0bd5-4862-974e-bbc1340fb984",
-        base_url="https://api.sambanova.ai/v1",
-    )
+    openai.api_key = "37e22f43-0bd5-4862-974e-bbc1340fb984"
+    openai.api_base = "https://api.sambanova.ai/v1"
 
-    response = client.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model="Llama-3.1-Swallow-70B-Instruct-v0.3",
         messages = [
             {"role": "system", "content": "Provide only the final answer. Do not include any internal chain-of-thought or explanations. i.e (Here are the character interactions from the)"},
